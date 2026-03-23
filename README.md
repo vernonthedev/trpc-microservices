@@ -1,148 +1,144 @@
-# Turborepo starter
+# tRPC Micro - NestJS + tRPC Monorepo
 
-This Turborepo starter is maintained by the Turborepo core team.
+A monorepo project using NestJS with tRPC for type-safe APIs, built with Turborepo.
 
-## Using this example
+## Project Structure
 
-Run the following command:
-
-```sh
-npx create-turbo@latest
+```
+my-turborepo/
+├── apps/
+│   ├── items/        # Items microservice (NestJS + tRPC)
+│   └── payments/     # Payments microservice (NestJS + tRPC)
+├── packages/
+│   └── trpc/        # Shared tRPC utilities and routers
+└── turbo.json       # Turborepo configuration
 ```
 
-## What's inside?
+## Apps & Packages
 
-This Turborepo includes the following packages/apps:
+### Apps
 
-### Apps and Packages
+- **`apps/items`**: NestJS application with items management
+  - REST API endpoints for CRUD operations
+  - tRPC router for type-safe API
+  - Technologies: NestJS, nestjs-trpc, Zod
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- **`apps/payments`**: NestJS application with payments management
+  - REST API endpoints for CRUD operations
+  - tRPC router for type-safe API
+  - Technologies: NestJS, nestjs-trpc, Zod
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Packages
 
-### Utilities
+- **`@repo/trpc`**: Shared tRPC utilities and router configurations
+  - Base tRPC initialization with SuperJSON transformer
+  - Reusable router and procedure exports
 
-This Turborepo has some additional tools already setup for you:
+## Technologies
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+- [NestJS](https://nestjs.com/) - Node.js framework
+- [tRPC](https://trpc.io/) - Type-safe APIs
+- [Zod](https://zod.dev/) - TypeScript-first schema validation
+- [Superjson](https://github.com/blitz-js/superjson) - JSON serialization
+- [Turborepo](https://turbo.build/) - Build system
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [ESLint](https://eslint.org/) - Code linting
+- [Prettier](https://prettier.io/) - Code formatting
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm 8+
+
+### Installation
+
+```sh
+pnpm install
+```
+
+### Development
+
+Run all apps in development mode:
+
+```sh
+pnpm turbo dev
+```
+
+Run a specific app:
+
+```sh
+# Items app
+pnpm --filter=items dev
+
+# Payments app
+pnpm --filter=payments dev
+```
 
 ### Build
 
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+Build all apps:
 
 ```sh
-cd my-turborepo
-turbo build
+pnpm turbo build
 ```
 
-Without global `turbo`, use your package manager:
+Build a specific app:
 
 ```sh
-cd my-turborepo
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+pnpm turbo build --filter=items
+pnpm turbo build --filter=payments
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+### Linting
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+Lint all apps:
 
 ```sh
-turbo build --filter=docs
+pnpm turbo lint
 ```
 
-Without global `turbo`:
+Lint a specific app:
 
 ```sh
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+pnpm --filter=items lint
+pnpm --filter=payments lint
 ```
 
-### Develop
+## API Endpoints
 
-To develop all apps and packages, run the following command:
+### Items App (Port 3000)
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+| Method | Endpoint     | Description    |
+| ------ | ------------ | -------------- |
+| POST   | `/items`     | Create item    |
+| GET    | `/items`     | List all items |
+| GET    | `/items/:id` | Get item by ID |
+| PUT    | `/items/:id` | Update item    |
+| DELETE | `/items/:id` | Delete item    |
 
-```sh
-cd my-turborepo
-turbo dev
-```
+### Payments App (Port 3001)
 
-Without global `turbo`, use your package manager:
+| Method | Endpoint        | Description       |
+| ------ | --------------- | ----------------- |
+| POST   | `/payments`     | Create payment    |
+| GET    | `/payments`     | List all payments |
+| GET    | `/payments/:id` | Get payment by ID |
 
-```sh
-cd my-turborepo
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+## tRPC Routes
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+Both apps expose tRPC routers:
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+- `items.listItems` - Query all items
+- `items.getItem` - Query item by ID
+- `items.createItem` - Mutation to create item
+- `items.updateItem` - Mutation to update item
+- `items.deleteItem` - Mutation to delete item
+- `payments.getPayment` - Query payment by ID
 
-```sh
-turbo dev --filter=web
-```
+## Contributing
 
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
+1. Run linting before committing
+2. Ensure TypeScript compiles without errors
+3. Follow conventional commits format
