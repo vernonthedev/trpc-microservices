@@ -1,3 +1,6 @@
 {
-  "prettier.enable": false
+  "editor.formatOnSave": false,
+  "editor.defaultFormatter": null,
+  "prettier.enable": false,
+  "editor.detectIndentation": false
 }
