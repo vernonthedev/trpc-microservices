@@ -1,9 +1,11 @@
-import { Module } from '@nestjs/common';
-import { ItemsModule } from './items/items.module';
+import { Module } from "@nestjs/common";
+import { ItemsModule } from "./items/items.module";
+import { TRPCModule } from "nestjs-trpc";
+import { ItemsRouter } from "./items/items.router";
 
 @Module({
-  imports: [ItemsModule],
+  imports: [ItemsModule, TRPCModule.forRoot({})],
   controllers: [],
-  providers: [],
+  providers: [ItemsRouter],
 })
 export class AppModule {}
