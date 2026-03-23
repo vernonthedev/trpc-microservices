@@ -1,21 +1,11 @@
 import { Module } from "@nestjs/common";
 import { PaymentsModule } from "./payments/payments.module";
-import { router, paymentsRouter } from "@repo/trpc";
-
-const appRouter = router({
-  payments: paymentsRouter,
-});
-
-export type AppRouter = typeof appRouter;
+import { TRPCModule } from "nestjs-trpc";
+import { PaymentsRouter } from "./payments/payments.router";
 
 @Module({
-  imports: [PaymentsModule],
+  imports: [PaymentsModule, TRPCModule.forRoot({})],
   controllers: [],
-  providers: [
-    {
-      provide: "APP_ROUTER",
-      useValue: appRouter,
-    },
-  ],
+  providers: [PaymentsRouter],
 })
 export class AppModule {}
